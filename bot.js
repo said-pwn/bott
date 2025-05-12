@@ -1,20 +1,19 @@
 import { Telegraf } from 'telegraf';
 
-const bot = new Telegraf('7912158076:AAHClxRiNqxP8l0plBK19BhJSrna1RpzWik'); // Токен твоего бота
 
-// URL мини-аппа
+const bot = new Telegraf('7912158076:AAHClxRiNqxP8l0plBK19BhJSrna1RpzWik');
+
 const webAppUrl = 'https://weather-five-sage.vercel.app/';
 
-// Обработка команды /start
 bot.start((ctx) => {
-  ctx.reply('Hello! This bot show weather in the world.\n\nPress "To know weather" 👇', {
+  ctx.reply('Hello! This bot shows weather in the world.\n\nPress "To know weather" 👇', {
     reply_markup: {
       keyboard: [
         [
           {
             text: 'To know weather',
             web_app: {
-              url: webAppUrl, // Ссылка на мини-апп
+              url: webAppUrl, 
             },
           },
         ],
@@ -25,7 +24,7 @@ bot.start((ctx) => {
   });
 });
 
-// Слушаем данные из мини-аппа (если отправляются через sendData)
+
 bot.on('message', (ctx) => {
   if (ctx.message.web_app_data) {
     const data = ctx.message.web_app_data.data;
@@ -33,7 +32,8 @@ bot.on('message', (ctx) => {
   }
 });
 
-// Запуск бота
-bot.launch();
-
-console.log('Бот запущен и готов к работе');
+bot.launch().then(() => {
+  console.log('Бот запущен и готов к работе');
+}).catch((err) => {
+  console.error('Ошибка при запуске бота:', err);
+});
